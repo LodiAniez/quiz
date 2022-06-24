@@ -47,16 +47,17 @@ export const insert = ({
 }
 
 export const update = async ({
-	table, values, id
+	table, references, id
 }: IUpdatePayload) => {
 	try {
 		return new Promise<any>((resolve, reject) => {
 			try {
 				if (!id) return reject("A reference id must be provided.")
 				if (!table) return reject("A table name must be provided.")
-				if (!values.length) return reject("Values must be provided.")
+				if (!references.length) return reject("Values must be provided.")
 
-				const columns: string[] = mapColumn(table)
+				const columns: string[] = [...references].map(ref => ref.key)
+				const values: any[] = [...references].map(ref => ref.value)
 
 				if (columns.length) {
 					const executableQuery: string = `UPDATE ${table} SET ${columns.map(col => `${col}=?`).join(", ")} WHERE id=?`
@@ -104,16 +105,21 @@ export const remove = async ({
 }
 
 export const select = async ({
-	table
+	table,
+	references
 }: ISelectPayload) => {
 	try {
 		return new Promise<any>((resolve, reject) => {
 			try {
 				if (!table) return reject("Table name is required.")
 
-				const executableQuery: string = `SELECT * FROM ${table}`
+				const executableQuery: string = (!references || !references.length) 
+																			? `SELECT * FROM ${table}` 
+																			: `SELECT * FROM ${table} WHERE ${references.map(({ key }) => `${key}=?`).join(" AND ")}`
 
-				connection.query(executableQuery, (err, results) => {
+				const values: any[] = references && references.length ? [...references].map(ref => ref.value) : []
+				
+				connection.query(executableQuery, values, (err, results) => {
 					if (err) return reject(err)
 
 					resolve(results)

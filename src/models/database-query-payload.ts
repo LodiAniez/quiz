@@ -5,8 +5,13 @@ export interface IInsertPayload {
 	values: any[];
 }
 
-export interface IUpdatePayload extends IInsertPayload {
+export interface IUpdatePayload {
 	id: number;
+	table: EDatabaseTables;
+	references: {
+		key: string;
+		value: any
+	}[]
 }
 
 export interface IDeletePayload {
@@ -16,4 +21,8 @@ export interface IDeletePayload {
 
 export interface ISelectPayload {
 	table: EDatabaseTables;
+	references?: {
+		key: string;
+		value: string;
+	}[]
 }

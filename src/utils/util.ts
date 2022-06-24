@@ -2,10 +2,15 @@ import { config } from "dotenv"
 import bcrypt from "bcrypt"
 import { Response } from "express"
 import { transport } from "./../configs/nodemailer"
+import { SALTROUND, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET, EMAIL_TOKEN_SECRET } from "./../secrets/index"
+import { sign, verify } from "jsonwebtoken"
+import NodeCache from "node-cache"
+
+const localCache = new NodeCache()
 
 config()
 
-const SALTROUNDS: string | number = process.env.SALTROUND || 10
+const SALTROUNDS: number | undefined = parseInt(SALTROUND) || 10
 
 /**
  * 
@@ -78,6 +83,45 @@ export const sendValidationEmail = async (email: string, url: string): Promise<b
 			subject: "Confirm Email",
 			html: `<p>Please confirm your email by clicking this <a href="${url}">link</a>.</p>`
 		})
+
+		return true
+	} catch (err) {
+		throw err
+	}
+}
+
+export const generateToken = (type: "access" | "refresh", user: any): string => {
+	return type === "access" 
+			? sign(user, ACCESS_TOKEN_SECRET, { expiresIn: "30min" })
+			: sign(user, REFRESH_TOKEN_SECRET)
+}
+
+export const deserializeToken = (token: string, type: "email" | "access" | "refresh"): any => {
+	try {
+		const secret = type === "email"
+								? EMAIL_TOKEN_SECRET
+								: type === "access"
+								? ACCESS_TOKEN_SECRET
+								: REFRESH_TOKEN_SECRET
+
+		return verify(token, secret, (err, user) => {
+			if (err) throw new ErrorException("Invalid token.")
+
+			return user
+		})
+	} catch (err) {
+		throw err
+	}
+}
+
+export const saveToCache = (email: string, data: any): boolean => localCache.set(email, data)
+
+export const validateRefreshToken = (email: string, token: string): boolean => {
+	try {
+		const cachedToken = localCache.get(email)
+
+		if (!cachedToken) throw new ErrorException("Token is invalid.")
+		if (cachedToken !== token) return false
 
 		return true
 	} catch (err) {
