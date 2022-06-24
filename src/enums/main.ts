@@ -8,7 +8,7 @@ export enum EDatabaseTables {
 
 export const EDatabaseTableColumns = {
 	USER: ["email", "password", "validated"],
-	QUIZ: ["title", "status", "permalink"],
+	QUIZ: ["title", "status", "linkcode"],
 	QUESTIONS: ["quizid", "type", "question"],
 	CHOICES: ["questionid", "label", "checkanswer"],
 	ANSWERS: ["questionid", "answers", "iscorrect"]

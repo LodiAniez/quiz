@@ -38,3 +38,44 @@ Content-Type: application/json
 {
 	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDU1NDQ1fQ._OB2eCs6b4qE6qNjzh7TgkmB7LyEsjTy_w9FVJ6INF4"
 }
+
+###
+
+POST http://localhost:3000/quiz/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDcwOTg5LCJleHAiOjE2NTYwNzE1ODl9.K-4FqVDshU3AQR4CPOX_OpX0ESEhStsDJ7NW1JH2DyA
+
+{
+	"title": "Pagwapohay",
+	"status": "published",
+	"questions": [
+		{
+			"type": "single",
+			"question": "Kinsay gwapo?",
+			"choices": [
+				{
+					"label": "James Reid",
+					"checkanswer": false
+				},
+				{
+					"label": "Dexter Louie Aniez",
+					"checkanswer": true
+				}
+			]
+		},
+		{
+			"type": "multiple",
+			"question": "Kinsay Maot?",
+			"choices": [
+				{
+					"label": "Dexter Louie Aniez",
+					"checkanswer": false
+				},
+				{
+					"label": "James Reid",
+					"checkanswer": true
+				}
+			]
+		}
+	]
+}

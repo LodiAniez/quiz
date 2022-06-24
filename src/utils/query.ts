@@ -5,7 +5,15 @@ import { EDatabaseTableColumns, EDatabaseTables } from "./../enums/main";
 const mapColumn: (table: string) => string[] = (table: string) => {
 	switch (table) {
 		case EDatabaseTables.USER:
-			return EDatabaseTableColumns.USER;
+			return EDatabaseTableColumns.USER
+		case EDatabaseTables.QUESTIONS:
+			return EDatabaseTableColumns.QUESTIONS
+		case EDatabaseTables.QUIZ:
+			return EDatabaseTableColumns.QUIZ
+		case EDatabaseTables.CHOICES:
+			return EDatabaseTableColumns.CHOICES
+		case EDatabaseTables.ANSWERS:
+			return EDatabaseTableColumns.ANSWERS
 		default: return undefined;
 	}
 }
