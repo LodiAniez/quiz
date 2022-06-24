@@ -24,5 +24,6 @@ export interface ISelectPayload {
 	references?: {
 		key: string;
 		value: string;
-	}[]
+	}[];
+	customQuery?: string;
 }
