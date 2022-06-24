@@ -114,7 +114,8 @@ export const deserializeToken = (token: string, type: "email" | "access" | "refr
 	}
 }
 
-export const saveToCache = (email: string, data: any): boolean => localCache.set(email, data)
+export const saveToCache = (key: string, data: any): boolean => localCache.set(key, data)
+export const removeFromCache = (key: string): number => localCache.del(key)
 
 export const validateRefreshToken = (email: string, token: string): boolean => {
 	try {

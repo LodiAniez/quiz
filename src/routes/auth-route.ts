@@ -1,5 +1,5 @@
 import { Router, Response, Request } from "express"
-import { respondError, ErrorException, hashPassword, sendValidationEmail, comparePassword, generateToken, deserializeToken, saveToCache, validateRefreshToken } from '../utils/util';
+import { respondError, ErrorException, hashPassword, sendValidationEmail, comparePassword, generateToken, deserializeToken, saveToCache, validateRefreshToken, removeFromCache } from '../utils/util';
 import { IAuthPayload } from '../models/api-payload';
 import { insert, select, update } from '../utils/query';
 import { EDatabaseTables } from '../enums/main';
@@ -47,6 +47,27 @@ app.post("/register", async (req: Request, res: Response) => {
 
 		res.status(200).send({
 			message: "You have successfully registered, please check your email for the validation link before signing in."
+		})
+	} catch (err) {
+		respondError(res, err)
+	}
+})
+
+app.post("/logout", async (req: Request, res: Response) => {
+	try {
+		const { token }: {
+			token?: string;
+		} = req.body
+
+		if (!token) return res.status(500).send({
+			message: "Token is required."
+		})
+
+		const deserializedUser = deserializeToken(token, "refresh")
+		removeFromCache(deserializedUser?.email)
+
+		res.status(200).send({
+			message: "You are successfully logged out from the system."
 		})
 	} catch (err) {
 		respondError(res, err)
