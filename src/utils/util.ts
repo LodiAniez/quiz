@@ -69,9 +69,10 @@ export class ErrorException extends Error {
 	}
 }
 
-export const respondError = (res: Response, err: Error): void => {
-	res.status(500).send({
+export const respondError = (res: Response, err: ErrorException): void => {
+	res.status(err.statusCode || 500).send({
 		message: err.message || "Internal Server Error.",
+		data: err.data || null,
 		status: false
 	})
 }
@@ -81,7 +82,7 @@ export const sendValidationEmail = async (email: string, url: string): Promise<b
 		await transport.sendMail({
 			to: email,
 			subject: "Confirm Email",
-			html: `<p>Please confirm your email by clicking this <a href="${url}">link</a>.</p>`
+			html: `<p>Thank you for registering, please confirm your email by clicking this <a href="${url}">link</a>.</p>`
 		})
 
 		return true
@@ -117,9 +118,9 @@ export const deserializeToken = (token: string, type: "email" | "access" | "refr
 export const saveToCache = (key: string, data: any): boolean => localCache.set(`${key}`, data)
 export const removeFromCache = (key: string): number => localCache.del(`${key}`)
 
-export const validateRefreshToken = (email: string, token: string): boolean => {
+export const validateRefreshToken = (key: string, token: string): boolean => {
 	try {
-		const cachedToken: { refreshToken: string } = localCache.get(`${email}`)
+		const cachedToken: { refreshToken: string } = localCache.get(`${key}`)
 
 		if (!cachedToken) throw new ErrorException("Token is invalid.")
 		if (cachedToken.refreshToken !== token) return false
