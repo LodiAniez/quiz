@@ -32,7 +32,7 @@ app.post("/register", async (req: Request, res: Response) => {
 				EMAIL_TOKEN_SECRET,
 				async (err: Error, token: string) => {
 					if (err) return reject(err)
-					const url: string = `http://localhost:3000/auth/confirmation/${token}`
+					const url: string = `http://localhost:3000/auth/confirmation/${token}`	/** <-- statically created, but this can be created dynamically */
 
 					try {
 						await sendValidationEmail(email, url)
@@ -125,10 +125,16 @@ app.post("/login", async (req: Request, res: Response) => {
 	}
 })
 
+/**
+ * Email token is used to validate the user's email
+ * No token expiry is set since, based on the requirement, the user does not have any option to resend
+ * the email validation link
+ */
 app.get("/confirmation/:token", async (req: Request, res: Response) => {
 	try {
 		const { token }: { token?: string } = req.params
 
+		/** Anyway, the validation is added in case if the token is modified from the link */
 		if (!token) return res.status(403).send({
 			message: "Token is invalid."
 		})
@@ -156,13 +162,14 @@ app.get("/confirmation/:token", async (req: Request, res: Response) => {
 /**
  * 
  * Value to be passed in the payload is the refresh token
+ * Only valid refresh token is granted
  */
 app.post("/token", (req: Request, res: Response) => {
 	try {
 		const { token }: {
 			token?: string
 		} = req.body
-		console.log(!token)
+		
 		if (!token) return res.status(403).send({
 			message: "Token is invalid."
 		})
