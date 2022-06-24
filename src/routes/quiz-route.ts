@@ -5,21 +5,9 @@ import { insert, select } from '../utils/query';
 import { EDatabaseTables } from "./../enums/main";
 import { IQuestionChoices } from '../models/api-payload';
 import { PORT } from "./../secrets/index"
+import { IFetchedChoice } from "./../models/common";
 
 const app = Router()
-
-interface IFetchedChoice {
-	id: number;
-	title: string;
-	status: "saved" | "published";
-	linkcode: string;
-	quizid: number;
-	type: "single" | "multiple";
-	question: string;
-	questionid: number;
-	label: string;
-	checkanswer: number;
-}
 
 app.get("/list", async (req: Request, res: Response) => {
 	try {
@@ -47,7 +35,7 @@ app.get("/list", async (req: Request, res: Response) => {
 													id: x.questionid,
 													type: x.type,
 													question: x.question,
-													choices: [...result].filter((y: IFetchedChoice) => y.questionid === res.questionid)
+													choices: [...result].filter((y: IFetchedChoice) => y.questionid === x.questionid)
 																							.map((y: IFetchedChoice) => ({
 																								id: y.id,
 																								label: y.label,
@@ -55,7 +43,7 @@ app.get("/list", async (req: Request, res: Response) => {
 																							}))
 												})),
 						linkcode: res.linkcode,
-						permalink: res.linkcode ? `http://localhost:3000/visitor/viewquiz/${res.linkcode}` : null
+						permalink: res.linkcode ? `http://localhost:3000/visitor/view/${res.linkcode}` : null
 					})
 				}
 			})
@@ -175,9 +163,9 @@ app.post("/create", async (req: Request, res: Response) => {
 		await Promise.all(choicesQueries)
 
 		res.status(200).send({
-			message: status === "published" ? `Quiz is successfully published, you can check the newly published quiz in this link http://localhost:${PORT}/quiz/view/${linkcode}.` : "Quiz is successfully saved.",
+			message: status === "published" ? `Quiz is successfully published, you can check the newly published quiz in this link http://localhost:${PORT}/visitor/view/${linkcode}.` : "Quiz is successfully saved.",
 			data: {
-				permalink: status === "published" ? `http://localhost:${PORT}/quiz/view/${linkcode}` : null
+				permalink: status === "published" ? `http://localhost:${PORT}/visitor/view/${linkcode}` : null
 			}
 		})
 	} catch (err) {

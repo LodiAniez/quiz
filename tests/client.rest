@@ -19,7 +19,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/quiz/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDgxNzE1LCJleHAiOjE2NTYwODIzMTV9.fJkD_xj__Ex26rBprS-6k_BsyShY-8m4i2XZfHx_k5c
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MTA5Mzg5LCJleHAiOjE2NTYxMDk5ODl9.4lxUMWz-ukq9RVgrFkef-fWNiKbTUKpBN8U1RRgVlUc
 
 ###
 
@@ -79,3 +79,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllY
 		}
 	]
 }
+
+###
+
+GET http://localhost:3000/visitor/view/cnct0eh7ps00

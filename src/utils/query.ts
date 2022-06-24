@@ -127,7 +127,6 @@ export const select = async ({
 																			: (!references || !references.length) 
 																			? `SELECT * FROM ${table}` 
 																			: `SELECT * FROM ${table} WHERE ${references.map(({ key }) => `${key}=?`).join(" AND ")}`
-				console.log(executableQuery)
 
 				const values: any[] = !customQuery && references && references.length 
 														? [...references].map(ref => ref.value) 
