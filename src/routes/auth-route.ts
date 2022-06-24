@@ -112,7 +112,7 @@ app.post("/login", async (req: Request, res: Response) => {
 		const refreshToken: string = generateToken("refresh", user)
 
 		/** Save refresh token to cache so we can revoke it later when the user logs out from the system */
-		saveToCache(email, refreshToken)
+		saveToCache(email, { refreshToken })
 
 		res.status(200).send({
 			message: "You are successfully logged in.",
@@ -162,14 +162,14 @@ app.post("/token", (req: Request, res: Response) => {
 		const { token }: {
 			token?: string
 		} = req.body
-
+		console.log(!token)
 		if (!token) return res.status(403).send({
 			message: "Token is invalid."
 		})
 
 		const deserializedUser = deserializeToken(token, "refresh")
-
-		const isTokenValid = validateRefreshToken(token, deserializedUser?.email)
+		
+		const isTokenValid = validateRefreshToken(deserializedUser?.email, token)
 
 		if (!isTokenValid) return res.status(403).send({
 			message: "Provided token is not valid."

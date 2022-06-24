@@ -92,7 +92,7 @@ export const sendValidationEmail = async (email: string, url: string): Promise<b
 
 export const generateToken = (type: "access" | "refresh", user: any): string => {
 	return type === "access" 
-			? sign(user, ACCESS_TOKEN_SECRET, { expiresIn: "30min" })
+			? sign(user, ACCESS_TOKEN_SECRET, { expiresIn: "30s" })
 			: sign(user, REFRESH_TOKEN_SECRET)
 }
 
@@ -114,15 +114,19 @@ export const deserializeToken = (token: string, type: "email" | "access" | "refr
 	}
 }
 
-export const saveToCache = (key: string, data: any): boolean => localCache.set(key, data)
-export const removeFromCache = (key: string): number => localCache.del(key)
+export const saveToCache = (key: string, data: any): boolean => {
+	console.log("Key that is saved to cache is", key)
+	return localCache.set(`${key}`, data)
+}
+export const removeFromCache = (key: string): number => localCache.del(`${key}`)
 
 export const validateRefreshToken = (email: string, token: string): boolean => {
 	try {
-		const cachedToken = localCache.get(email)
+		const cachedToken: { refreshToken: string } = localCache.get(`${email}`)
+		console.log(cachedToken)
 
 		if (!cachedToken) throw new ErrorException("Token is invalid.")
-		if (cachedToken !== token) return false
+		if (cachedToken.refreshToken !== token) return false
 
 		return true
 	} catch (err) {
