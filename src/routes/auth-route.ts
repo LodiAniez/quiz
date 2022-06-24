@@ -25,13 +25,14 @@ app.post("/register", async (req: Request, res: Response) => {
 		/** Send email validation */
 		await new Promise<void>((resolve, reject) => {
 			sign(
-				{
+				{	
 					email,
 					id: insertResult.insertId
 				},
 				EMAIL_TOKEN_SECRET,
 				async (err: Error, token: string) => {
 					if (err) return reject(err)
+
 					const url: string = `http://localhost:3000/auth/confirmation/${token}`	/** <-- statically created, but this can be created dynamically */
 
 					try {
@@ -140,6 +141,7 @@ app.get("/confirmation/:token", async (req: Request, res: Response) => {
 		})
 
 		const serializedUser = deserializeToken(token, "email")
+		
 		await update({
 			table: EDatabaseTables.USER,
 			id: serializedUser?.id,
