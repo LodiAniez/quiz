@@ -120,14 +120,18 @@ export const select = async ({
 	try {
 		return new Promise<any>((resolve, reject) => {
 			try {
-				if (!table) return reject("Table name is required.")
-
-				const executableQuery: string = customQuery || (!references || !references.length) 
+				if (!table && !customQuery) return reject("Table name is required.")
+				
+				const executableQuery: string = customQuery 
+																			? customQuery 
+																			: (!references || !references.length) 
 																			? `SELECT * FROM ${table}` 
 																			: `SELECT * FROM ${table} WHERE ${references.map(({ key }) => `${key}=?`).join(" AND ")}`
+				console.log(executableQuery)
 
-				const values: any[] = !customQuery && 
-				references && references.length ? [...references].map(ref => ref.value) : []
+				const values: any[] = !customQuery && references && references.length 
+														? [...references].map(ref => ref.value) 
+														: []
 				
 				connection.query(executableQuery, values, (err, results) => {
 					if (err) return reject(err)

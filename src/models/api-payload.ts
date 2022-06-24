@@ -29,4 +29,5 @@ export interface ICreateQuizPayload {
 	status: "saved" | "published";
 	questions: IQuizQuestions[];
 	linkcode?: string;
+	permalink?: string;
 }

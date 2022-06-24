@@ -19,7 +19,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/quiz/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDU1NTExLCJleHAiOjE2NTYwNTU1NDF9.eSewozCTcoJk51zcvIEMiqkv15msKqYTjGq4JvFyR9Q
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDgxNzE1LCJleHAiOjE2NTYwODIzMTV9.fJkD_xj__Ex26rBprS-6k_BsyShY-8m4i2XZfHx_k5c
 
 ###
 
@@ -43,15 +43,15 @@ Content-Type: application/json
 
 POST http://localhost:3000/quiz/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDcwOTg5LCJleHAiOjE2NTYwNzE1ODl9.K-4FqVDshU3AQR4CPOX_OpX0ESEhStsDJ7NW1JH2DyA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDcxNzM2LCJleHAiOjE2NTYwNzIzMzZ9.tWZ5SpjEhtUDnVRwabhbXhNsIuVO1GjNNrbOUxFjtqA
 
 {
-	"title": "Pagwapohay",
-	"status": "published",
+	"title": "Test quiz",
+	"status": "saved",
 	"questions": [
 		{
 			"type": "single",
-			"question": "Kinsay gwapo?",
+			"question": "What is your name?",
 			"choices": [
 				{
 					"label": "James Reid",
@@ -65,7 +65,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllY
 		},
 		{
 			"type": "multiple",
-			"question": "Kinsay Maot?",
+			"question": "What is my name?",
 			"choices": [
 				{
 					"label": "Dexter Louie Aniez",

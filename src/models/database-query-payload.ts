@@ -20,7 +20,7 @@ export interface IDeletePayload {
 }
 
 export interface ISelectPayload {
-	table: EDatabaseTables;
+	table?: EDatabaseTables;
 	references?: {
 		key: string;
 		value: string;

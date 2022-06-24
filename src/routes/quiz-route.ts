@@ -1,17 +1,69 @@
 import { Router, Request, Response } from "express"
 import { ICreateQuizPayload, IQuizQuestions } from "./../models/api-payload";
 import { respondError, ErrorException } from './../utils/util';
-import { insert } from '../utils/query';
+import { insert, select } from '../utils/query';
 import { EDatabaseTables } from "./../enums/main";
 import { IQuestionChoices } from '../models/api-payload';
 import { PORT } from "./../secrets/index"
 
 const app = Router()
 
+interface IFetchedChoice {
+	id: number;
+	title: string;
+	status: "saved" | "published";
+	linkcode: string;
+	quizid: number;
+	type: "single" | "multiple";
+	question: string;
+	questionid: number;
+	label: string;
+	checkanswer: number;
+}
+
 app.get("/list", async (req: Request, res: Response) => {
 	try {
+		const { QUIZ, QUESTIONS, CHOICES } = EDatabaseTables
+
+		const result = await select({
+			customQuery: `select * from ${QUIZ} inner join ${QUESTIONS} inner join ${CHOICES} on ${QUIZ}.id=${QUESTIONS}.quizid and ${QUESTIONS}.id=${CHOICES}.questionid`
+		})
+
+		const list: ICreateQuizPayload[] = []
+
+		await Promise.resolve(
+			result.forEach((res: IFetchedChoice) => {
+				const isSaved = list.find((data: ICreateQuizPayload) => data.id === res.quizid)
+				
+				if (!isSaved) {
+					const questionData = [...result].filter((x: IFetchedChoice) => x.quizid === res.quizid)
+
+					list.push({
+						id: res.quizid,
+						title: res.title,
+						status: res.status,
+						questions: [...new Map(questionData.map(item => [item["questionid"], item])).values()]	/** <-- So we could filter out the duplicate choices */
+												.map((x: IFetchedChoice) => ({
+													id: x.questionid,
+													type: x.type,
+													question: x.question,
+													choices: [...result].filter((y: IFetchedChoice) => y.questionid === res.questionid)
+																							.map((y: IFetchedChoice) => ({
+																								id: y.id,
+																								label: y.label,
+																								checkanswer: y.checkanswer > 0
+																							}))
+												})),
+						linkcode: res.linkcode,
+						permalink: res.linkcode ? `http://localhost:3000/visitor/viewquiz/${res.linkcode}` : null
+					})
+				}
+			})
+		)
+
 		res.status(200).send({
-			message: "List successfully fetched."
+			message: "List successfully fetched.",
+			data: { list }
 		})
 	} catch (err) {
 		respondError(res, err)
@@ -125,7 +177,7 @@ app.post("/create", async (req: Request, res: Response) => {
 		res.status(200).send({
 			message: status === "published" ? `Quiz is successfully published, you can check the newly published quiz in this link http://localhost:${PORT}/quiz/view/${linkcode}.` : "Quiz is successfully saved.",
 			data: {
-				permalink: `http://localhost:${PORT}/quiz/view/${linkcode}`
+				permalink: status === "published" ? `http://localhost:${PORT}/quiz/view/${linkcode}` : null
 			}
 		})
 	} catch (err) {
