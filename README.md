@@ -1,12 +1,12 @@
-### Setup
+## Setup
 
 1. **run `npm install` to install the project dependencies**
 2. **run `npm run build` to build the project**
 3. **run `npm run start:dev` to start the server in development env**
 
-### Endpoints Created
+## Endpoints Created
 
-## Auth Endpoint
+### Auth Endpoint
 
 **Endpoint: http://localhost:${PORT}/auth/${endpoint}**
 **Description: This route will authenticate and will provide the user a token credentials to be used to access protected routes**
@@ -59,7 +59,7 @@
       ```
    -  **Description**: Will revoke the refresh token's access
 
-## Quiz Endpoint
+### Quiz Endpoint
 
 **Endpoint: http://localhost:${PORT}/quiz/${endpoint}**
 **Description: This is a protected route, only user's that has valid token creds can access this route, this route allows the user to view, create and edit a quiz**
