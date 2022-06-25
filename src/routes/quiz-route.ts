@@ -159,8 +159,8 @@ app.post("/create", async (req: Request, res: Response) => {
 	try {
 		const { title, questions, status }: ICreateQuizPayload = req.body
 
-		const NUMBER_OF_QUESTIONS = 2	/** Should be 20 */
-		const NUMBER_OF_CHOICES = 2		/** Should be 10 */
+		const NUMBER_OF_QUESTIONS = 20	/** Should be 20 */
+		const NUMBER_OF_CHOICES = 10		/** Should be 10 */
 
 		/**
 		 * 
