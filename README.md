@@ -139,3 +139,29 @@
       	}
       ```
    -  **Description**: Will allow the user to update an item individually, when quiz list is fetched, a field called `edited` is included, from frontend, when a quiz, or a question or a choice is updated, update the `edited` flag to keep track which data is updated, then create a variable for the payload with a type that's specified above, I structured this payload this way so it would be easy to update the update data from the database. This would be easy and more organized both in frontend and backend perspective.
+
+### Visitor Endpoint
+
+**Endpoint: http://localhost:${PORT}/visitor/${endpoint}**
+**Description: This is a public route. This route can be accessed initially using the quiz's generated permalink, every visitor that visits this route will have a random id assigned to him.**
+
+**Endpoints Created**
+
+-  GET /view/:linkcode
+
+   -  **Description**: Will take a single param `linkcode`, this is the generated quiz linkcode, more like a quiz id, the visitor can access a specific PUBLISHED quiz using this linkcode, once the visitor accesses this endpoint, a random userid will be assigned to him. The id will be used for recording his answers for this specific quiz. This endpoint will return the quiz referred by the linkcode, the user can then answer that quiz.
+
+-  POST `/answer`
+
+   -  payload type:
+      ```typescript
+      	interface {
+      		userid: string;	/** <-- This will be the generated visitor/userid when the user visits the `/view/:linkcode` */
+      		quizid: number;
+      		questionsanswered: {
+      			id: number;
+      			answers: number[];	/** <-- This will be an array of choice ids, for the answer, for a specific question */
+      		}[]
+      	}
+      ```
+   -  **Description**: This endpoint allows the user to submit his answers for a specific question, this will return a response that includes the number of questions answered and the visitor's total score. Visitor's details and answers will be saved in the database.
