@@ -95,16 +95,16 @@
    -  payload type:
       ```typescript
       	interface {
-      		title: string;
-      		status: "saved" | "published";
-      		questions: {
-      			type: "single" | "multiple";
-      			question: string;
-      			choices: {
-      				label: string;
-      				checkanswer: boolean;
-      			}[];
+      	 title: string;
+      	 status: "saved" | "published";
+      	 questions: {
+      	  type: "single" | "multiple";
+      	  question: string;
+      		choices: {
+      		 label: string;
+      		 checkanswer: boolean;
       		}[];
+      	 }[];
       	}
       ```
    -  description: will allow the authenticated user to create a new quiz, `Note: this endpoint is only for the creation of each individual quiz`, if quiz status is published, this endpoint will
