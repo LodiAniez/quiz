@@ -28,3 +28,19 @@
 -  GET /confirmation/:token
 
    -  description: When link from email is clicked, confirmation status is updated from database, that will allow the user to login.
+
+-  POST /token
+
+   -  payload type:
+      {
+      token: string;
+      }
+   -  description: When access token is expired, pass the VALIDA refresh token to the request's body to generate a new access token
+
+-  POST /logout
+
+   -  payload type:
+      {
+      token: string;
+      }
+   -  description: Will revoke the refresh token's access
