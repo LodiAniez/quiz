@@ -14,6 +14,8 @@ const mapColumn: (table: string) => string[] = (table: string) => {
 			return EDatabaseTableColumns.CHOICES
 		case EDatabaseTables.ANSWERS:
 			return EDatabaseTableColumns.ANSWERS
+		case EDatabaseTables.VISITOR:
+			return EDatabaseTableColumns.VISITOR
 		default: return undefined;
 	}
 }
@@ -115,7 +117,8 @@ export const remove = async ({
 export const select = async ({
 	table,
 	references,
-	customQuery
+	customQuery,
+	columns
 }: ISelectPayload) => {
 	try {
 		return new Promise<any>((resolve, reject) => {
@@ -125,8 +128,8 @@ export const select = async ({
 				const executableQuery: string = customQuery 
 																			? customQuery 
 																			: (!references || !references.length) 
-																			? `SELECT * FROM ${table}` 
-																			: `SELECT * FROM ${table} WHERE ${references.map(({ key }) => `${key}=?`).join(" AND ")}`
+																			? `SELECT ${ columns.length ? columns.join(", ") : "*" } FROM ${table}` 
+																			: `SELECT ${ columns.length ? columns.join(", ") : "*" } FROM ${table} WHERE ${references.map(({ key }) => `${key}=?`).join(" AND ")}`
 
 				const values: any[] = !customQuery && references && references.length 
 														? [...references].map(ref => ref.value) 

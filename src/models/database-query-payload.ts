@@ -21,6 +21,7 @@ export interface IDeletePayload {
 
 export interface ISelectPayload {
 	table?: EDatabaseTables;
+	columns?: string[];
 	references?: {
 		key: string;
 		value: string;

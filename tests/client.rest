@@ -19,7 +19,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/quiz/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MTExNTY5LCJleHAiOjE2NTYxMTIxNjl9.LOq7dWCenkWmAcESuYN6jJhItivenBKqrfcrhgyBXUA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MTIxNDc4LCJleHAiOjE2NTYxMjIwNzh9.lev9O6KWkafnJoaoBrlbau1vA4cktXF-oP-hAG2v4H0
 
 ###
 
@@ -108,6 +108,26 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllY
 			"id": 8,
 			"label": "Bouyancy force updated",
 			"checkanswer": true
+		}
+	]
+}
+
+###
+
+POST http://localhost:3000/visitor/answer
+Content-Type: application/json
+
+{
+	"userid": "gsef",
+	"quizid": 2,
+	"questionsanswered": [
+		{
+			"id": 3,
+			"answers": [5]
+		},
+		{
+			"id": 4,
+			"answers": [8]
 		}
 	]
 }

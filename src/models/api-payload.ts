@@ -62,3 +62,14 @@ export interface IEditItemPayload {
 	questions: IEditQuestionPayload[];
 	choices: IEditOptionPayload[];
 }
+
+export interface IQuestionsAnswered {
+	id: number;
+	answers: number[];
+}
+
+export interface IAnswerQuizPayload {
+	userid: string;
+	quizid: number;
+	questionsanswered: IQuestionsAnswered[];
+}

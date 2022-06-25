@@ -3,7 +3,8 @@ export enum EDatabaseTables {
 	QUIZ = "m_quiz",
 	QUESTIONS = "m_questions",
 	CHOICES = "m_choices",
-	ANSWERS = "u_answers"
+	ANSWERS = "u_answers",
+	VISITOR = "u_visitor"
 }
 
 export const EDatabaseTableColumns = {
@@ -11,5 +12,6 @@ export const EDatabaseTableColumns = {
 	QUIZ: ["title", "status", "linkcode"],
 	QUESTIONS: ["quizid", "type", "question"],
 	CHOICES: ["questionid", "label", "checkanswer"],
-	ANSWERS: ["questionid", "answers", "iscorrect"]
+	ANSWERS: ["userid", "questionid", "answers", "iscorrect"],
+	VISITOR: ["id", "quizid", "score"]
 }

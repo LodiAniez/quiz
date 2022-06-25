@@ -165,6 +165,7 @@ app.get("/confirmation/:token", async (req: Request, res: Response) => {
  * 
  * Value to be passed in the payload is the refresh token
  * Only valid refresh token is granted
+ * the purpose of this endpoint is to generate a fresh access token based on the VALID refresh token passed on the body of the request
  */
 app.post("/token", (req: Request, res: Response) => {
 	try {
