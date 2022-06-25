@@ -65,27 +65,47 @@
    -  description: will return the list of quizzes of type:
 
    ```typescript
-   interface {
+   	interface {
    	edited: boolean;
    	editable: boolean;
    	id: number;
    	title: string;
    	status: string;
    	questions: {
+   	id: number;
+   	type: string;
+   	question: string;
+   	edited: boolean;
+   	editable: boolean;
+   	choices: {
    		id: number;
-   		type: string;
-   		question: string;
+   		label: string;
+   		checkanswer: boolean;
    		edited: boolean;
    		editable: boolean;
-   		choices: {
-   			id: number;
-   			label: string;
-   			checkanswer: boolean;
-   			edited: boolean;
-   			editable: boolean;
-   		}[];
+   	}[];
    	}[];
    	linkcode: string;
    	permalink: string | null;
-   }[];
+   	}[];
    ```
+
+-  POST /create
+
+   -  payload type:
+      ```typescript
+      	interface {
+      		title: string;
+      		status: "saved" | "published";
+      		questions: {
+      			type: "single" | "multiple";
+      			question: string;
+      			choices: {
+      				label: string;
+      				checkanswer: boolean;
+      			}[];
+      		}[];
+      	}
+      ```
+   -  description: will allow the authenticated user to create a new quiz, `Note: this endpoint is only for the creation of each individual quiz`, if quiz status is published, this endpoint will
+      generate a permalink so it can be accessible by the visitors. Published quizzes cannot be edited anymore.
