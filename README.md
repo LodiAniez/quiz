@@ -16,7 +16,7 @@
       		password: string;
       	}
       ```
-   -  description: Registration process will happen, confirmation link will be generated and will be sent to the user's email, sign in will not work unless email is confirmed
+   -  **Description**: Registration process will happen, confirmation link will be generated and will be sent to the user's email, sign in will not work unless email is confirmed
 
 -  POST /login
 
@@ -27,11 +27,11 @@
       		password: string;
       	}
       ```
-   -  description: Login process will happen, if credentials are valid AND IF the email is confirmed, an access and refresh token will be generated and will be sent back to frontend, that will serve as creds.
+   -  **Description**: Login process will happen, if credentials are valid AND IF the email is confirmed, an access and refresh token will be generated and will be sent back to frontend, that will serve as creds.
 
 -  GET /confirmation/:token
 
-   -  description: When link from email is clicked, confirmation status is updated from database, that will allow the user to login.
+   -  **Description**: When link from email is clicked, confirmation status is updated from database, that will allow the user to login.
 
 -  POST /token
 
@@ -41,7 +41,7 @@
       		token: string;
       	}
       ```
-   -  description: When access token is expired, pass the VALIDA refresh token to the request's body to generate a new access token
+   -  **Description**: When access token is expired, pass the VALIDA refresh token to the request's body to generate a new access token
 
 -  POST /logout
 
@@ -51,7 +51,7 @@
       		token: string;
       	}
       ```
-   -  description: Will revoke the refresh token's access
+   -  **Description**: Will revoke the refresh token's access
 
 ## Quiz Endpoint
 
@@ -62,7 +62,7 @@
 
 -  GET /list
 
-   -  description: will return the list of quizzes of type:
+   -  **Description**: will return the list of quizzes of type:
 
    ```typescript
    	interface {
@@ -107,5 +107,5 @@
       	 }[];
       	}
       ```
-   -  description: will allow the authenticated user to create a new quiz, `Note: this endpoint is only for the creation of each individual quiz`, if quiz status is published, this endpoint will
+   -  **Description**: will allow the authenticated user to create a new quiz, `Note: this endpoint is only for the creation of each individual quiz`, if quiz status is published, this endpoint will
       generate a permalink so it can be accessible by the visitors. Published quizzes cannot be edited anymore.
