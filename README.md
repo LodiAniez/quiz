@@ -3,6 +3,7 @@
 1. **run `npm install` to install the project dependencies**
 2. **run `npm run build` to build the project**
 3. **run `npm run start:dev` to start the server in development env**
+4. **run `npm run db:migrate` to start database migration process, make sure xampp server is running**
 
 ## Endpoints Created
 
@@ -113,5 +114,28 @@
       	 }[];
       	}
       ```
-   -  **Description**: will allow the authenticated user to create a new quiz, `Note: this endpoint is only for the creation of each individual quiz`, if quiz status is published, this endpoint will
-      generate a permalink so it can be accessible by the visitors. Published quizzes cannot be edited anymore.
+   -  **Description**: will allow the authenticated user to create a new quiz, `Note: this endpoint is only for the creation of each individual quiz`, if quiz status is published, this endpoint will generate a permalink so it can be accessible by the visitors. Published quizzes cannot be edited anymore.
+
+-  POST /edit
+
+   -  payload type:
+      ```typescript
+      	interface {
+      		quiz: {
+      			id: number;
+      			title: string;
+      			status: "saved" | "published";
+      		};
+      		questions: {
+      			id: number;
+      			type: "single" | "multiple";
+      			question: string;
+      		}[];
+      		choices: {
+      			id: number;
+      			label: string;
+      			checkanswer: boolean;
+      		}[]
+      	}
+      ```
+   -  **Description**: Will allow the user to update an item individually, when quiz list is fetched, a field called `edited` is included, from frontend, when a quiz, or a question or a choice is updated, update the `edited` flag to keep track which data is updated, then create a variable for the payload with a type that's specified above, I structured this payload this way so it would be easy to update the update data from the database. This would be easy and more organized both in frontend and backend perspective.
