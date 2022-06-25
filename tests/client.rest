@@ -19,7 +19,7 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/quiz/list
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MTA5Mzg5LCJleHAiOjE2NTYxMDk5ODl9.4lxUMWz-ukq9RVgrFkef-fWNiKbTUKpBN8U1RRgVlUc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MTExNTY5LCJleHAiOjE2NTYxMTIxNjl9.LOq7dWCenkWmAcESuYN6jJhItivenBKqrfcrhgyBXUA
 
 ###
 
@@ -27,7 +27,7 @@ POST http://localhost:3000/auth/token
 Content-Type: application/json
 
 {
-	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDU1NDQ1fQ._OB2eCs6b4qE6qNjzh7TgkmB7LyEsjTy_w9FVJ6INF4"
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MTExOTAwfQ.ZM1ycyAU-yrPzJjKZIAe_vP8fpB1yvhgVVNbbP-q1uw"
 }
 
 ###
@@ -43,19 +43,19 @@ Content-Type: application/json
 
 POST http://localhost:3000/quiz/create
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MDcxNzM2LCJleHAiOjE2NTYwNzIzMzZ9.tWZ5SpjEhtUDnVRwabhbXhNsIuVO1GjNNrbOUxFjtqA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MTExOTAwLCJleHAiOjE2NTYxMTI1MDB9.Tvt2I2AjP5WudU4VZGNnlosS6DLzZU46fEavbXkttWE
 
 {
-	"title": "Test quiz",
+	"title": "Philippines",
 	"status": "saved",
 	"questions": [
 		{
 			"type": "single",
-			"question": "What is your name?",
+			"question": "Who is the current president of the Philippines?",
 			"choices": [
 				{
-					"label": "James Reid",
-					"checkanswer": false
+					"label": "BongBong Marcos Jr.",
+					"checkanswer": true
 				},
 				{
 					"label": "Dexter Louie Aniez",
@@ -65,14 +65,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllY
 		},
 		{
 			"type": "multiple",
-			"question": "What is my name?",
+			"question": "Nganong gwapo kaayo si Dexter Louie Aniez?",
 			"choices": [
 				{
-					"label": "Dexter Louie Aniez",
+					"label": "Secret",
 					"checkanswer": false
 				},
 				{
-					"label": "James Reid",
+					"label": "Basta kay secret",
 					"checkanswer": true
 				}
 			]
@@ -83,3 +83,31 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllY
 ###
 
 GET http://localhost:3000/visitor/view/cnct0eh7ps00
+
+###
+
+POST http://localhost:3000/quiz/edit
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvdWllYW5pZXpAZ21haWwuY29tIiwiaWF0IjoxNjU2MTE5NjY4LCJleHAiOjE2NTYxMjAyNjh9.kxBwaDWkipaNt7x8faBOjUKtybG-EBoaYcEHJVglR1k
+
+{
+	"quiz": {
+		"id": 4,
+		"title": "Pagwapohay updated",
+		"status": "published"
+	},
+	"questions": [
+		{
+			"id": 6,
+			"type": "multiple",
+			"question": "Kinsay Maot updated"
+		}
+	],
+	"choices": [
+		{
+			"id": 8,
+			"label": "Bouyancy force updated",
+			"checkanswer": true
+		}
+	]
+}

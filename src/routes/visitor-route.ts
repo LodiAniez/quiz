@@ -43,6 +43,7 @@ app.get("/view/:linkcode", async (req: Request, res: Response) => {
 												}))
 				list.linkcode = res.linkcode
 				list.permalink = res.linkcode ? `http://localhost:3000/visitor/view/${res.linkcode}` : null
+				list.userid = `user-${Date.now()}` /** <-- Visitor's generated ID when he visits this endpoint to take the quiz */
 			})
 		)
 

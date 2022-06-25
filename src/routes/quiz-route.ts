@@ -1,13 +1,92 @@
 import { Router, Request, Response } from "express"
 import { ICreateQuizPayload, IQuizQuestions } from "./../models/api-payload";
 import { respondError, ErrorException } from './../utils/util';
-import { insert, select } from '../utils/query';
+import { insert, select, update } from '../utils/query';
 import { EDatabaseTables } from "./../enums/main";
-import { IQuestionChoices } from '../models/api-payload';
+import { IQuestionChoices, IEditItemPayload } from '../models/api-payload';
 import { PORT } from "./../secrets/index"
 import { IFetchedChoice } from "./../models/common";
 
 const app = Router()
+
+app.post("/edit", async (req: Request, res: Response) => {
+	try {
+		/**
+		 * 
+		 * Items can be edited individually, i.e, by quiz, by question and by choice
+		 */
+		const { quiz, questions, choices }: IEditItemPayload = req.body
+		const { QUIZ, QUESTIONS, CHOICES } = EDatabaseTables
+
+		/** if `quiz` key is not undefined, this means that this quiz is modified from frontend */
+		if (quiz) {
+			await update({
+				table: QUIZ,
+				references: [
+					{
+						key: "title",
+						value: quiz.title
+					},
+					{
+						key: "status",
+						value: quiz.status
+					}
+				],
+				id: quiz.id
+			})
+		}
+
+		/** if `questions` key length value is not 0, this means that a question is modified from frontend */
+		if (questions.length) {
+			const updateQuestions = [...questions].map(question => {
+				return update({
+					table: QUESTIONS,
+					id: question.id,
+					references: [
+						{
+							key: "type",
+							value: question.type
+						},
+						{
+							key: "question",
+							value: question.question
+						}
+					]
+				})
+			})
+
+			await Promise.all(updateQuestions)
+		}
+
+		/** if `choices` key length value is not 0, this means that an option/choice is modified from frontend */
+		if (choices.length) {
+			const updateChoices = [...choices].map(choice => {
+				return update({
+					table: CHOICES,
+					id: choice.id,
+					references: [
+						{
+							key: "label",
+							value: choice.label
+						},
+						{
+							key: "checkanswer",
+							value: choice.checkanswer
+						}
+					]
+				})
+			})
+
+			await Promise.all(updateChoices)
+		}
+
+		res.status(200).send({
+			message: "Data are successfully updated."
+		})
+	} catch (err) {
+		respondError(res, err)
+	}
+})
 
 app.get("/list", async (req: Request, res: Response) => {
 	try {
@@ -25,22 +104,40 @@ app.get("/list", async (req: Request, res: Response) => {
 				
 				if (!isSaved) {
 					const questionData = [...result].filter((x: IFetchedChoice) => x.quizid === res.quizid)
-
+					
+					/**
+					 * 
+					 * `edited` flag should update to true if either the quiz itself, or a specific question, or a specific choice/option is modified from frontend
+					 * so we can only query to the database those items that have been modified from the frontend (during the editing process)
+					 * we can filter those out using the `edited` flag
+					 * in this way, it can greatly help for query optimization
+					 * 
+					 * quiz level has the `edited` flag, update this to true if quiz title is modified from frontend
+					 * question level has the `edited` flag, update this to true if question properties, i.e, type and question properties, are modified from frontend
+					 * choice/option level has the `edited` flag, update this to true if choice properties, i.e, label and checkanswer properties are modified from frontend
+					 * `editable` flag gives the idea of whether the item is editable or not
+					 */
 					list.push({
+						edited: false,
+						editable: res.status === "saved",
 						id: res.quizid,
 						title: res.title,
 						status: res.status,
 						questions: [...new Map(questionData.map(item => [item["questionid"], item])).values()]	/** <-- So we could filter out the duplicate choices */
-												.map((x: IFetchedChoice) => ({
+												.map((x: IFetchedChoice): IQuizQuestions => ({
 													id: x.questionid,
 													type: x.type,
 													question: x.question,
 													choices: [...result].filter((y: IFetchedChoice) => y.questionid === x.questionid)
-																							.map((y: IFetchedChoice) => ({
+																							.map((y: IFetchedChoice): IQuestionChoices => ({
 																								id: y.id,
 																								label: y.label,
-																								checkanswer: y.checkanswer > 0
-																							}))
+																								checkanswer: y.checkanswer > 0,
+																								edited: false,
+																								editable: y.quizid === res.quizid && res.status === "saved"
+																							})),
+													edited: false,
+													editable: x.quizid === res.quizid && res.status === "saved"
 												})),
 						linkcode: res.linkcode,
 						permalink: res.linkcode ? `http://localhost:3000/visitor/view/${res.linkcode}` : null
